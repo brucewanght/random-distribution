@@ -67,74 +67,74 @@ double rand_val(int seed);                    // Jain's RNG
 //===== Main program ========================================================
 void main(void)
 {
-  char   in_string[256];      // Input string
-  FILE   *fp;                 // File pointer to output file
-  double a;                   // Pareto alpha value
-  double k;                   // Pareto k value
-  double p;                   // Pareto p value
-  double pareto_rv;           // Pareto random variable
-  int    num_values;          // Number of values
-  int    i;                   // Loop counter
+    char   in_string[256];      // Input string
+    FILE   *fp;                 // File pointer to output file
+    double a;                   // Pareto alpha value
+    double k;                   // Pareto k value
+    double p;                   // Pareto p value
+    double pareto_rv;           // Pareto random variable
+    int    num_values;          // Number of values
+    int    i;                   // Loop counter
 
-  //Output banner
-  printf("---------------------------------------- genpar2.c ----- \n");
-  printf("-  Program to generate bounded Pareto random variables - \n");
-  printf("-  with lower bound value of k and upper bound of p    - \n");
-  printf("-------------------------------------------------------- \n");
+    //Output banner
+    printf("---------------------------------------- genpar2.c ----- \n");
+    printf("-  Program to generate bounded Pareto random variables - \n");
+    printf("-  with lower bound value of k and upper bound of p    - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Enter output file name =========================> ");
-  scanf("%s", in_string);
-  fp = fopen(in_string, "w");
-  if (fp == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", in_string);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Enter output file name =========================> ");
+    scanf("%s", in_string);
+    fp = fopen(in_string, "w");
+    if (fp == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", in_string);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed (greater than zero) =========> ");
-  scanf("%s", in_string);
-  rand_val((int) atoi(in_string));
+    // Prompt for random number seed and then use it
+    printf("Random number seed (greater than zero) =========> ");
+    scanf("%s", in_string);
+    rand_val((int) atoi(in_string));
 
-  // Prompt for Pareto alpha value
-  printf("Pareto alpha value =============================> ");
-  scanf("%s", in_string);
-  a = atof(in_string);
+    // Prompt for Pareto alpha value
+    printf("Pareto alpha value =============================> ");
+    scanf("%s", in_string);
+    a = atof(in_string);
 
-  // Prompt for Pareto k value
-  printf("Pareto k value =================================> ");
-  scanf("%s", in_string);
-  k = atof(in_string);
+    // Prompt for Pareto k value
+    printf("Pareto k value =================================> ");
+    scanf("%s", in_string);
+    k = atof(in_string);
 
-  // Prompt for Pareto k value
-  printf("Pareto p value =================================> ");
-  scanf("%s", in_string);
-  p = atof(in_string);
+    // Prompt for Pareto k value
+    printf("Pareto p value =================================> ");
+    scanf("%s", in_string);
+    p = atof(in_string);
 
-  // Prompt for number of values to generate
-  printf("Number of values to generate ===================> ");
-  scanf("%s", in_string);
-  num_values = atoi(in_string);
+    // Prompt for number of values to generate
+    printf("Number of values to generate ===================> ");
+    scanf("%s", in_string);
+    num_values = atoi(in_string);
 
-  //Output message and generate samples
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                    \n");
-  printf("-    * alpha = %f                                \n", a);
-  printf("-    * k     = %f                                \n", k);
-  printf("-    * p     = %f                                \n", p);
-  printf("-------------------------------------------------------- \n");
-  for (i=0; i<num_values; i++)
-  {
-    pareto_rv = bpareto(a, k, p);
-    fprintf(fp, "%f \n", pareto_rv);
-  }
+    //Output message and generate samples
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                    \n");
+    printf("-    * alpha = %f                                \n", a);
+    printf("-    * k     = %f                                \n", k);
+    printf("-    * p     = %f                                \n", p);
+    printf("-------------------------------------------------------- \n");
+    for (i = 0; i < num_values; i++)
+    {
+        pareto_rv = bpareto(a, k, p);
+        fprintf(fp, "%f \n", pareto_rv);
+    }
 
-  //Output message and close the outout file
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp);
+    //Output message and close the outout file
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp);
 }
 
 //===========================================================================
@@ -144,20 +144,20 @@ void main(void)
 //===========================================================================
 double bpareto(double a, double k, double p)
 {
-  double z;     // Uniform random number from 0 to 1
-  double rv;    // RV to be returned
+    double z;     // Uniform random number from 0 to 1
+    double rv;    // RV to be returned
 
-  // Pull a uniform RV (0 < z < 1)
-  do
-  {
-    z = rand_val(0);
-  }
-  while ((z == 0) || (z == 1));
+    // Pull a uniform RV (0 < z < 1)
+    do
+    {
+        z = rand_val(0);
+    }
+    while ((z == 0) || (z == 1));
 
-  // Generate the bounded Pareto rv using the inversion method
-  rv = pow((pow(k, a) / (z*pow((k/p), a) - z + 1)), (1.0/a));
+    // Generate the bounded Pareto rv using the inversion method
+    rv = pow((pow(k, a) / (z * pow((k / p), a) - z + 1)), (1.0 / a));
 
-  return(rv);
+    return(rv);
 }
 
 //=========================================================================
@@ -169,31 +169,31 @@ double bpareto(double a, double k, double p)
 //=========================================================================
 double rand_val(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Set the seed if argument is non-zero and then return zero
-  if (seed > 0)
-  {
-    x = seed;
-    return(0.0);
-  }
+    // Set the seed if argument is non-zero and then return zero
+    if (seed > 0)
+    {
+        x = seed;
+        return(0.0);
+    }
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random value between 0.0 and 1.0
-  return((double) x / m);
+    // Return a random value between 0.0 and 1.0
+    return((double) x / m);
 }

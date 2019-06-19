@@ -59,59 +59,59 @@
 //===== Main program ========================================================
 void main(void)
 {
-  FILE     *fp;                 // File pointer to output file
-  char     file_name[256];      // Output file name string
-  char     temp_string[256];    // Temporary string variable
-  double   lambda;              // Mean of arrival rate
-  double   det_rv;              // Deterministic random variable
-  double   time_period;         // Time period to generate arrival samples
-  double   sum_time;            // Sum of time up to now
-  long int i;                   // Loop counter
+    FILE     *fp;                 // File pointer to output file
+    char     file_name[256];      // Output file name string
+    char     temp_string[256];    // Temporary string variable
+    double   lambda;              // Mean of arrival rate
+    double   det_rv;              // Deterministic random variable
+    double   time_period;         // Time period to generate arrival samples
+    double   sum_time;            // Sum of time up to now
+    long int i;                   // Loop counter
 
-  //Output banner
-  printf("----------------------------------------- genexp.c ----- \n");
-  printf("-  Program to generate deterministically distributed   - \n");
-  printf("-  interarrival times.                                 - \n");
-  printf("-------------------------------------------------------- \n");
+    //Output banner
+    printf("----------------------------------------- genexp.c ----- \n");
+    printf("-  Program to generate deterministically distributed   - \n");
+    printf("-  interarrival times.                                 - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Output file name ===================================> ");
-  scanf("%s", file_name);
-  fp = fopen(file_name, "w");
-  if (fp == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", file_name);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Output file name ===================================> ");
+    scanf("%s", file_name);
+    fp = fopen(file_name, "w");
+    if (fp == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", file_name);
+        exit(1);
+    }
 
-  // Prompt for mean arrival rate (lambda)
-  printf("Arrival rate in customers per second (lambda) ======> ");
-  scanf("%s", temp_string);
-  lambda = atof(temp_string);
+    // Prompt for mean arrival rate (lambda)
+    printf("Arrival rate in customers per second (lambda) ======> ");
+    scanf("%s", temp_string);
+    lambda = atof(temp_string);
 
-  // Prompt for time period (seconds) to generate samples
-  printf("Time period to generate interarrival times =========> ");
-  scanf("%s", temp_string);
-  time_period = atof(temp_string);
+    // Prompt for time period (seconds) to generate samples
+    printf("Time period to generate interarrival times =========> ");
+    scanf("%s", temp_string);
+    time_period = atof(temp_string);
 
-  //Output message and generate interarrival times
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                          - \n");
-  printf("-------------------------------------------------------- \n");
+    //Output message and generate interarrival times
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                          - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Generate and output interarrival times
-  sum_time = 0.0;
-  while(1)
-  {
-    det_rv = 1.0 / lambda;
-    fprintf(fp, "%f \n", det_rv);
-    sum_time = sum_time + det_rv;
-    if (sum_time >= time_period) break;
-  }
+    // Generate and output interarrival times
+    sum_time = 0.0;
+    while(1)
+    {
+        det_rv = 1.0 / lambda;
+        fprintf(fp, "%f \n", det_rv);
+        sum_time = sum_time + det_rv;
+        if (sum_time >= time_period) break;
+    }
 
-  //Output message and close the output file
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp);
+    //Output message and close the output file
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp);
 }

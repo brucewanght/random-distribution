@@ -54,67 +54,67 @@ long   rand_vald(int seed);     // Jain's RNG to return a discrete number
 //===== Main program ========================================================
 void main(void)
 {
-  FILE     *fp;                 // File pointer to output file
-  char     file_name[256];      // Output file name string
-  char     temp_string[256];    // Temporary string variable
-  int      min;                 // Minimum value
-  int      max;                 // Maximum value
-  int      unif_rv;             // Uniformly random variable
-  int      num_values;          // Number of values
-  int      i;                   // Loop counter
+    FILE     *fp;                 // File pointer to output file
+    char     file_name[256];      // Output file name string
+    char     temp_string[256];    // Temporary string variable
+    int      min;                 // Minimum value
+    int      max;                 // Maximum value
+    int      unif_rv;             // Uniformly random variable
+    int      num_values;          // Number of values
+    int      i;                   // Loop counter
 
-  // Output banner
-  printf("--------------------------------------- genunifd.c ----- \n");
-  printf("-  Program to generate discrete uniform RVs            - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output banner
+    printf("--------------------------------------- genunifd.c ----- \n");
+    printf("-  Program to generate discrete uniform RVs            - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Output file name ===================================> ");
-  scanf("%s", file_name);
-  fp = fopen(file_name, "w");
-  if (fp == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", file_name);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Output file name ===================================> ");
+    scanf("%s", file_name);
+    fp = fopen(file_name, "w");
+    if (fp == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", file_name);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed =================================> ");
-  scanf("%s", temp_string);
-  rand_vald((int) atoi(temp_string));
+    // Prompt for random number seed and then use it
+    printf("Random number seed =================================> ");
+    scanf("%s", temp_string);
+    rand_vald((int) atoi(temp_string));
 
-  // Prompt for min value
-  printf("Min value (discrete) ===============================> ");
-  scanf("%s", temp_string);
-  min = atoi(temp_string);
+    // Prompt for min value
+    printf("Min value (discrete) ===============================> ");
+    scanf("%s", temp_string);
+    min = atoi(temp_string);
 
-  // Prompt for max value
-  printf("Max value (discrete) ===============================> ");
-  scanf("%s", temp_string);
-  max = atoi(temp_string);
+    // Prompt for max value
+    printf("Max value (discrete) ===============================> ");
+    scanf("%s", temp_string);
+    max = atoi(temp_string);
 
-  // Prompt for number of values to generate
-  printf("Number of values to generate =======================> ");
-  scanf("%s", temp_string);
-  num_values = atoi(temp_string);
+    // Prompt for number of values to generate
+    printf("Number of values to generate =======================> ");
+    scanf("%s", temp_string);
+    num_values = atoi(temp_string);
 
-  //Output message and generate interarrival times
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                          - \n");
-  printf("-------------------------------------------------------- \n");
+    //Output message and generate interarrival times
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                          - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Generate and output interarrival times
-  for (i=0; i<num_values; i++)
-  {
-    unif_rv = unifd(min, max);
-    fprintf(fp, "%d \n", unif_rv);
-  }
+    // Generate and output interarrival times
+    for (i = 0; i < num_values; i++)
+    {
+        unif_rv = unifd(min, max);
+        fprintf(fp, "%d \n", unif_rv);
+    }
 
-  //Output message and close the output file
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp);
+    //Output message and close the output file
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp);
 }
 
 //===========================================================================
@@ -124,16 +124,16 @@ void main(void)
 //===========================================================================
 double unifd(int min, int max)
 {
-  int    z;                     // Uniform random integer number
-  int    unif_value;            // Computed uniform value to be returned
+    int    z;                     // Uniform random integer number
+    int    unif_value;            // Computed uniform value to be returned
 
-  // Pull a uniform random integer
-  z = rand_vald(0);
+    // Pull a uniform random integer
+    z = rand_vald(0);
 
-  // Compute uniform discrete random variable using inversion method
-  unif_value = z % (max - min + 1) + min;
+    // Compute uniform discrete random variable using inversion method
+    unif_value = z % (max - min + 1) + min;
 
-  return(unif_value);
+    return(unif_value);
 }
 
 //=========================================================================
@@ -143,31 +143,31 @@ double unifd(int min, int max)
 //=========================================================================
 long rand_vald(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Set the seed if argument is non-zero and then return zero
-  if (seed > 0)
-  {
-    x = seed;
-    return(0.0);
-  }
+    // Set the seed if argument is non-zero and then return zero
+    if (seed > 0)
+    {
+        x = seed;
+        return(0.0);
+    }
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random integer number
-  return(x);
+    // Return a random integer number
+    return(x);
 }

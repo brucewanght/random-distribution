@@ -65,67 +65,67 @@ double rand_val(int seed);                 // Jain's RNG
 //===== Main program ========================================================
 void main(void)
 {
-  FILE     *fp_out;               // File pointer to output file
-  char     instring[80];          // Input string
-  double   num_samples;           // Number of samples to generate
-  double   mean, std_dev;         // Mean and standard deviation
-  double   norm_rv;               // The adjusted normal rv
-  int      i;                     // Loop counter
+    FILE     *fp_out;               // File pointer to output file
+    char     instring[80];          // Input string
+    double   num_samples;           // Number of samples to generate
+    double   mean, std_dev;         // Mean and standard deviation
+    double   norm_rv;               // The adjusted normal rv
+    int      i;                     // Loop counter
 
-  // Output banner
-  printf("---------------------------------------- gennorm.c ----- \n");
-  printf("-  Program to generate normally distributed random     - \n");
-  printf("-  variables                                           - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output banner
+    printf("---------------------------------------- gennorm.c ----- \n");
+    printf("-  Program to generate normally distributed random     - \n");
+    printf("-  variables                                           - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Output file name ===================================> ");
-  scanf("%s", instring);
-  fp_out = fopen(instring, "w");
-  if (fp_out == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", instring);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Output file name ===================================> ");
+    scanf("%s", instring);
+    fp_out = fopen(instring, "w");
+    if (fp_out == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", instring);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed =================================> ");
-  scanf("%s", instring);
-  rand_val((int) atoi(instring));
+    // Prompt for random number seed and then use it
+    printf("Random number seed =================================> ");
+    scanf("%s", instring);
+    rand_val((int) atoi(instring));
 
-  // Prompt for mean value
-  printf("Mean ===============================================> ");
-  scanf("%s", instring);
-  mean = atof(instring);
+    // Prompt for mean value
+    printf("Mean ===============================================> ");
+    scanf("%s", instring);
+    mean = atof(instring);
 
-  // Prompt for standard deviation
-  printf("Standard deviation =================================> ");
-  scanf("%s", instring);
-  std_dev = atof(instring);
+    // Prompt for standard deviation
+    printf("Standard deviation =================================> ");
+    scanf("%s", instring);
+    std_dev = atof(instring);
 
-  // Prompt for number of samples to generate
-  printf("Number of samples to generate ======================> ");
-  scanf("%s", instring);
-  num_samples = atoi(instring);
+    // Prompt for number of samples to generate
+    printf("Number of samples to generate ======================> ");
+    scanf("%s", instring);
+    num_samples = atoi(instring);
 
-  // Output message and generate interarrival times
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                          - \n");
-  printf("-------------------------------------------------------- \n");
-  for (i=0; i<num_samples; i++)
-  {
-    // Generate a normally distributed rv
-    norm_rv = norm(mean, std_dev);
+    // Output message and generate interarrival times
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                          - \n");
+    printf("-------------------------------------------------------- \n");
+    for (i = 0; i < num_samples; i++)
+    {
+        // Generate a normally distributed rv
+        norm_rv = norm(mean, std_dev);
 
-    // Output the norm_rv value
-    fprintf(fp_out, "%f \n", norm_rv);
-  }
+        // Output the norm_rv value
+        fprintf(fp_out, "%f \n", norm_rv);
+    }
 
-  // Output message and close the distribution and output files
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp_out);
+    // Output message and close the distribution and output files
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp_out);
 }
 
 //===========================================================================
@@ -136,31 +136,31 @@ void main(void)
 //===========================================================================
 double norm(double mean, double std_dev)
 {
-  double   u, r, theta;           // Variables for Box-Muller method
-  double   x;                     // Normal(0, 1) rv
-  double   norm_rv;               // The adjusted normal rv
+    double   u, r, theta;           // Variables for Box-Muller method
+    double   x;                     // Normal(0, 1) rv
+    double   norm_rv;               // The adjusted normal rv
 
-  // Generate u
-  u = 0.0;
-  while (u == 0.0)
-    u = rand_val(0);
+    // Generate u
+    u = 0.0;
+    while (u == 0.0)
+        u = rand_val(0);
 
-  // Compute r
-  r = sqrt(-2.0 * log(u));
+    // Compute r
+    r = sqrt(-2.0 * log(u));
 
-  // Generate theta
-  theta = 0.0;
-  while (theta == 0.0)
-    theta = 2.0 * PI * rand_val(0);
+    // Generate theta
+    theta = 0.0;
+    while (theta == 0.0)
+        theta = 2.0 * PI * rand_val(0);
 
-  // Generate x value
-  x = r * cos(theta);
+    // Generate x value
+    x = r * cos(theta);
 
-  // Adjust x value for specified mean and variance
-  norm_rv = (x * std_dev) + mean;
+    // Adjust x value for specified mean and variance
+    norm_rv = (x * std_dev) + mean;
 
-  // Return the normally distributed RV value
-  return(norm_rv);
+    // Return the normally distributed RV value
+    return(norm_rv);
 }
 
 //=========================================================================
@@ -172,31 +172,31 @@ double norm(double mean, double std_dev)
 //=========================================================================
 double rand_val(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Set the seed if argument is non-zero and then return zero
-  if (seed > 0)
-  {
-    x = seed;
-    return(0.0);
-  }
+    // Set the seed if argument is non-zero and then return zero
+    if (seed > 0)
+    {
+        x = seed;
+        return(0.0);
+    }
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random value between 0.0 and 1.0
-  return((double) x / m);
+    // Return a random value between 0.0 and 1.0
+    return((double) x / m);
 }

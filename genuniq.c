@@ -45,74 +45,74 @@ int Generator31(void);         // Unique value RNG credited to Roy Hann
 //===========================================================================
 void main()
 {
-  FILE   *fp;                  // File pointer to output file
-  char    file_name[256];      // Output file name string
-  char    temp_string[256];    // Temporary string variable
-  int     num;                 // Number of values to generate
-  int    *z;                   // Array of shuffled unique integers
-  int     temp;                // Temporary value
-  int     i, j;                // Indexes
+    FILE   *fp;                  // File pointer to output file
+    char    file_name[256];      // Output file name string
+    char    temp_string[256];    // Temporary string variable
+    int     num;                 // Number of values to generate
+    int    *z;                   // Array of shuffled unique integers
+    int     temp;                // Temporary value
+    int     i, j;                // Indexes
 
-  // Output banner
-  printf("---------------------------------------- genuniq.c ----- \n");
-  printf("-  Program to generate unique random integers          - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output banner
+    printf("---------------------------------------- genuniq.c ----- \n");
+    printf("-  Program to generate unique random integers          - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Output file name ===================================> ");
-  scanf("%s", file_name);
-  fp = fopen(file_name, "w");
-  if (fp == NULL)
-  {
-    printf("*** ERROR in creating output file (%s) \n", file_name);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Output file name ===================================> ");
+    scanf("%s", file_name);
+    fp = fopen(file_name, "w");
+    if (fp == NULL)
+    {
+        printf("*** ERROR in creating output file (%s) \n", file_name);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed (greater than 0) ================> ");
-  scanf("%s", temp_string);
-  randInt((int) atoi(temp_string));
+    // Prompt for random number seed and then use it
+    printf("Random number seed (greater than 0) ================> ");
+    scanf("%s", temp_string);
+    randInt((int) atoi(temp_string));
 
-  // Prompt for number of values to generate
-  printf("Number of unique values to generate ================> ");
-  scanf("%s", temp_string);
-  num = atoi(temp_string);
+    // Prompt for number of values to generate
+    printf("Number of unique values to generate ================> ");
+    scanf("%s", temp_string);
+    num = atoi(temp_string);
 
-  // Malloc space for an array of num integers
-  z = (int *) malloc(num * sizeof(int));
-  if (z == NULL)
-  {
-    printf("*** ERROR - could not malloc space for array \n");
-    exit(1);
-  }
+    // Malloc space for an array of num integers
+    z = (int *) malloc(num * sizeof(int));
+    if (z == NULL)
+    {
+        printf("*** ERROR - could not malloc space for array \n");
+        exit(1);
+    }
 
-  // Create an array of num unique integers
-  for (i=0; i<num; i++)
-    z[i] = Generator31();
+    // Create an array of num unique integers
+    for (i = 0; i < num; i++)
+        z[i] = Generator31();
 
-  // Shuffle the array of unique integers
-  for (i=0; i<num; i++)
-  {
-    j = randInt(0) % num;
-    temp = z[i];
-    z[i] = z[j];
-    z[j] = temp;
-  }
+    // Shuffle the array of unique integers
+    for (i = 0; i < num; i++)
+    {
+        j = randInt(0) % num;
+        temp = z[i];
+        z[i] = z[j];
+        z[j] = temp;
+    }
 
-  // Output message and generate values
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                          - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output message and generate values
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                          - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Output the values to the file
-  for (i=0; i<num; i++)
-    fprintf(fp, "%d \n", z[i]);
+    // Output the values to the file
+    for (i = 0; i < num; i++)
+        fprintf(fp, "%d \n", z[i]);
 
-  // Output message and close the output file
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done!                                               - \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp);
+    // Output message and close the output file
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done!                                               - \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp);
 }
 
 //=========================================================================
@@ -121,13 +121,13 @@ void main()
 //=========================================================================
 int Generator31(void)
 {
-  static int n = 1;            // Start with n = 1
+    static int n = 1;            // Start with n = 1
 
-  // Generate the unique random value
-  n = n >> 1 | ((n^n >> 3) & 1) << 30;
+    // Generate the unique random value
+    n = n >> 1 | ((n ^ n >> 3) & 1) << 30;
 
-  // Return the unique random value
-  return n;
+    // Return the unique random value
+    return n;
 }
 
 //=========================================================================
@@ -139,27 +139,27 @@ int Generator31(void)
 //=========================================================================
 int randInt(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value (seed is set to 1)
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value (seed is set to 1)
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Seed the RNG
-  if (seed > 0) x = seed;
+    // Seed the RNG
+    if (seed > 0) x = seed;
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random integer value
-  return(x);
+    // Return a random integer value
+    return(x);
 }

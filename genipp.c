@@ -72,91 +72,91 @@ double rand_val(int seed);      // Jain's RNG
 //===== Main program ==========================================================
 void main(void)
 {
-  char     in_string[32];       // Input string
-  FILE     *fp;                 // File pointer to output file
-  double   lambda;              // IPP packet generation rate
-  double   alpha;               // IPP rate from on to off
-  double   beta;                // IPP rate from off to on
-  double   ipp_rv;              // IPP random variable
-  double   temp, temp1;         // Variables needed for IPP to H2 conversion
-  double   lambda1, lambda2;    // Variables needed for IPP to H2 conversion
-  double   pi1;                 // Variable needed for IPP to H2 conversion
-  double   time_period ;        // Time period to generate arrival samples
-  double   sum_time;            // Sum of time upto now
-  long int i;                   // Loop counter
+    char     in_string[32];       // Input string
+    FILE     *fp;                 // File pointer to output file
+    double   lambda;              // IPP packet generation rate
+    double   alpha;               // IPP rate from on to off
+    double   beta;                // IPP rate from off to on
+    double   ipp_rv;              // IPP random variable
+    double   temp, temp1;         // Variables needed for IPP to H2 conversion
+    double   lambda1, lambda2;    // Variables needed for IPP to H2 conversion
+    double   pi1;                 // Variable needed for IPP to H2 conversion
+    double   time_period ;        // Time period to generate arrival samples
+    double   sum_time;            // Sum of time upto now
+    long int i;                   // Loop counter
 
-  //Output banner
-  printf("-------------------------------------------------------- \n");
-  printf("-  Program to generate IPP interarrival times            \n");
-  printf("-------------------------------------------------------- \n");
+    //Output banner
+    printf("-------------------------------------------------------- \n");
+    printf("-  Program to generate IPP interarrival times            \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Enter output file name =========================> ");
-  scanf("%s", in_string);
-  fp = fopen(in_string, "w");
-  if (fp == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", in_string);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Enter output file name =========================> ");
+    scanf("%s", in_string);
+    fp = fopen(in_string, "w");
+    if (fp == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", in_string);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed =============================> ");
-  scanf("%s", in_string);
-  rand_val((int) atoi(in_string));
+    // Prompt for random number seed and then use it
+    printf("Random number seed =============================> ");
+    scanf("%s", in_string);
+    rand_val((int) atoi(in_string));
 
-  // Prompt for packet generation rate (lambda)
-  printf("Packet generation rate when on (lambda) ========> ");
-  scanf("%s", in_string);
-  lambda = atof(in_string);
+    // Prompt for packet generation rate (lambda)
+    printf("Packet generation rate when on (lambda) ========> ");
+    scanf("%s", in_string);
+    lambda = atof(in_string);
 
-  // Prompt for on-to-off rate (alpha)
-  printf("On-to-off rate (alpha) =========================> ");
-  scanf("%s", in_string);
-  alpha = atof(in_string);
+    // Prompt for on-to-off rate (alpha)
+    printf("On-to-off rate (alpha) =========================> ");
+    scanf("%s", in_string);
+    alpha = atof(in_string);
 
-  // Prompt for off-to-on rate (beta)
-  printf("Off-to-on rate (beta) ==========================> ");
-  scanf("%s", in_string);
-  beta = atof(in_string);
+    // Prompt for off-to-on rate (beta)
+    printf("Off-to-on rate (beta) ==========================> ");
+    scanf("%s", in_string);
+    beta = atof(in_string);
 
-  // Prompt for time period (seconds) to generate samples
-  printf("Time period to generate samples ================> ");
-  scanf("%s", in_string);
-  time_period = atof(in_string);
+    // Prompt for time period (seconds) to generate samples
+    printf("Time period to generate samples ================> ");
+    scanf("%s", in_string);
+    time_period = atof(in_string);
 
-  // Conversion from IPP to H2
-  temp = (lambda + alpha + beta);
-  temp1 = (4.0 * lambda * beta);
-  lambda1 = 0.5*(temp + sqrt(temp*temp - temp1));
-  lambda2 = 0.5*(temp - sqrt(temp*temp - temp1));
-  pi1 = (lambda - lambda2)/(lambda1 - lambda2);
+    // Conversion from IPP to H2
+    temp = (lambda + alpha + beta);
+    temp1 = (4.0 * lambda * beta);
+    lambda1 = 0.5 * (temp + sqrt(temp * temp - temp1));
+    lambda2 = 0.5 * (temp - sqrt(temp * temp - temp1));
+    pi1 = (lambda - lambda2) / (lambda1 - lambda2);
 
-  //Output message and generate samples
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples for %f seconds...   \n", time_period);
-  printf("-    * lambda = %f customers per second   \n", lambda);
-  printf("-    * alpha  = %f transitions per second \n", alpha);
-  printf("-    * beta   = %f transations per second \n", beta);
-  printf("-------------------------------------------------------- \n");
-  sum_time = 0.0;
-  while(1)
-  {
-    if (rand_val(0) < pi1)
-      ipp_rv = expon(1.0 / lambda1);
-    else
-      ipp_rv = expon(1.0 / lambda2);
+    //Output message and generate samples
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples for %f seconds...   \n", time_period);
+    printf("-    * lambda = %f customers per second   \n", lambda);
+    printf("-    * alpha  = %f transitions per second \n", alpha);
+    printf("-    * beta   = %f transations per second \n", beta);
+    printf("-------------------------------------------------------- \n");
+    sum_time = 0.0;
+    while(1)
+    {
+        if (rand_val(0) < pi1)
+            ipp_rv = expon(1.0 / lambda1);
+        else
+            ipp_rv = expon(1.0 / lambda2);
 
-    fprintf(fp, "%f \n", ipp_rv);
-    sum_time = sum_time + ipp_rv;
-    if (sum_time >= time_period) break;
-  }
+        fprintf(fp, "%f \n", ipp_rv);
+        sum_time = sum_time + ipp_rv;
+        if (sum_time >= time_period) break;
+    }
 
-  //Output message and close the outout file
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp);
+    //Output message and close the outout file
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp);
 }
 
 //=============================================================================
@@ -166,16 +166,16 @@ void main(void)
 //=============================================================================
 double expon(double x)
 {
-  double z;     // Uniform random number from 0 to 1
+    double z;     // Uniform random number from 0 to 1
 
-  // Pull a uniform RV (0 < z < 1)
-  do
-  {
-    z = rand_val(0);
-  }
-  while ((z == 0) || (z == 1));
+    // Pull a uniform RV (0 < z < 1)
+    do
+    {
+        z = rand_val(0);
+    }
+    while ((z == 0) || (z == 1));
 
-  return(-x * log(z));
+    return(-x * log(z));
 }
 
 //=========================================================================
@@ -187,31 +187,31 @@ double expon(double x)
 //=========================================================================
 double rand_val(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Set the seed if argument is non-zero and then return zero
-  if (seed > 0)
-  {
-    x = seed;
-    return(0.0);
-  }
+    // Set the seed if argument is non-zero and then return zero
+    if (seed > 0)
+    {
+        x = seed;
+        return(0.0);
+    }
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random value between 0.0 and 1.0
-  return((double) x / m);
+    // Return a random value between 0.0 and 1.0
+    return((double) x / m);
 }

@@ -53,67 +53,67 @@ double rand_val(int seed);        // Jain's RNG
 //===== Main program ========================================================
 void main(void)
 {
-  FILE     *fp;                 // File pointer to output file
-  char     file_name[256];      // Output file name string
-  char     temp_string[256];    // Temporary string variable
-  int      n;                   // Number of trials
-  double   p;                   // Probability of success
-  int      bin_rv;              // Binomial random variable
-  int      num_values;          // Number of values to generate
-  int      i;                   // Loop counter
+    FILE     *fp;                 // File pointer to output file
+    char     file_name[256];      // Output file name string
+    char     temp_string[256];    // Temporary string variable
+    int      n;                   // Number of trials
+    double   p;                   // Probability of success
+    int      bin_rv;              // Binomial random variable
+    int      num_values;          // Number of values to generate
+    int      i;                   // Loop counter
 
-  // Output banner
-  printf("---------------------------------------- genpois.c ----- \n");
-  printf("-  Program to generate Poisson random variables        - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output banner
+    printf("---------------------------------------- genpois.c ----- \n");
+    printf("-  Program to generate Poisson random variables        - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Prompt for output filename and then create/open the file
-  printf("Output file name ===================================> ");
-  scanf("%s", file_name);
-  fp = fopen(file_name, "w");
-  if (fp == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", file_name);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Output file name ===================================> ");
+    scanf("%s", file_name);
+    fp = fopen(file_name, "w");
+    if (fp == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", file_name);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed (greater than 0) ================> ");
-  scanf("%s", temp_string);
-  rand_val((int) atoi(temp_string));
+    // Prompt for random number seed and then use it
+    printf("Random number seed (greater than 0) ================> ");
+    scanf("%s", temp_string);
+    rand_val((int) atoi(temp_string));
 
-  // Prompt for Prob[success]
-  printf("Prob[success] value ================================> ");
-  scanf("%s", temp_string);
-  p = atof(temp_string);
+    // Prompt for Prob[success]
+    printf("Prob[success] value ================================> ");
+    scanf("%s", temp_string);
+    p = atof(temp_string);
 
-  // Prompt for number of trials
-  printf("Number of trials ====================================> ");
-  scanf("%s", temp_string);
-  n = atoi(temp_string);
+    // Prompt for number of trials
+    printf("Number of trials ====================================> ");
+    scanf("%s", temp_string);
+    n = atoi(temp_string);
 
-  // Prompt for number of values to generate
-  printf("Number of values to generate =======================> ");
-  scanf("%s", temp_string);
-  num_values = atoi(temp_string);
+    // Prompt for number of values to generate
+    printf("Number of values to generate =======================> ");
+    scanf("%s", temp_string);
+    num_values = atoi(temp_string);
 
-  //Output message and generate interarrival times
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                          - \n");
-  printf("-------------------------------------------------------- \n");
+    //Output message and generate interarrival times
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                          - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Generate and output binomial random variables
-  for (i=0; i<num_values; i++)
-  {
-    bin_rv = binomial(p, n);
-    fprintf(fp, "%d \n", bin_rv);
-  }
+    // Generate and output binomial random variables
+    for (i = 0; i < num_values; i++)
+    {
+        bin_rv = binomial(p, n);
+        fprintf(fp, "%d \n", bin_rv);
+    }
 
-  //Output message and close the output file
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp);
+    //Output message and close the output file
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp);
 }
 
 //===========================================================================
@@ -123,15 +123,15 @@ void main(void)
 //===========================================================================
 int binomial(double p, int n)
 {
-  int    bin_value;             // Computed Poisson value to be returned
-  int    i;                     // Loop counter
+    int    bin_value;             // Computed Poisson value to be returned
+    int    i;                     // Loop counter
 
-  // Generate a binomial random variate
-  bin_value = 0;
-  for (i=0; i<n; i++)
-    if (rand_val(0) < p) bin_value++;
+    // Generate a binomial random variate
+    bin_value = 0;
+    for (i = 0; i < n; i++)
+        if (rand_val(0) < p) bin_value++;
 
-  return(bin_value);
+    return(bin_value);
 }
 
 //=========================================================================
@@ -143,31 +143,31 @@ int binomial(double p, int n)
 //=========================================================================
 double rand_val(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Set the seed if argument is non-zero and then return zero
-  if (seed > 0)
-  {
-    x = seed;
-    return(0.0);
-  }
+    // Set the seed if argument is non-zero and then return zero
+    if (seed > 0)
+    {
+        x = seed;
+        return(0.0);
+    }
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random value between 0.0 and 1.0
-  return((double) x / m);
+    // Return a random value between 0.0 and 1.0
+    return((double) x / m);
 }

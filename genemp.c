@@ -69,8 +69,8 @@
 //----- Globals -------------------------------------------------------------
 struct rv                       // Structure for an empirical RV
 {
-  double cdf_val;               // *** Probability value
-  double rv_val;                // *** RV value
+    double cdf_val;               // *** Probability value
+    double rv_val;                // *** RV value
 };
 struct rv CDF[MAX_ENTRY];       // The CDF built from DIST_FILE
 int       Num_entries;          // The number of entries in the CDF
@@ -82,90 +82,90 @@ double rand_val(int seed);      // Jain's RNG
 //===== Main program ========================================================
 void main(void)
 {
-  FILE     *fp_dist;              // File pointer to distribution file
-  FILE     *fp_out;               // File pointer to output file
-  char     instring1[80];         // Input string #1
-  char     instring2[80];         // Input string #2
-  double   num_samples;           // Number of samples to generate
-  double   emp_rv;                // Exponential random variable
-  int      i;                     // Loop counter
+    FILE     *fp_dist;              // File pointer to distribution file
+    FILE     *fp_out;               // File pointer to output file
+    char     instring1[80];         // Input string #1
+    char     instring2[80];         // Input string #2
+    double   num_samples;           // Number of samples to generate
+    double   emp_rv;                // Exponential random variable
+    int      i;                     // Loop counter
 
-  // Output banner
-  printf("----------------------------------------- genemp.c ----- \n");
-  printf("-  Program to generate empirically distributed random  - \n");
-  printf("-  variables (empirical distribution in file dist.dat) - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output banner
+    printf("----------------------------------------- genemp.c ----- \n");
+    printf("-  Program to generate empirically distributed random  - \n");
+    printf("-  variables (empirical distribution in file dist.dat) - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Open the distribution file
-  fp_dist = fopen(DIST_FILE, "r");
-  if (fp_dist == NULL)
-  {
-    printf("ERROR in opening the distributin file (%s) \n", DIST_FILE);
-    exit(1);
-  }
+    // Open the distribution file
+    fp_dist = fopen(DIST_FILE, "r");
+    if (fp_dist == NULL)
+    {
+        printf("ERROR in opening the distributin file (%s) \n", DIST_FILE);
+        exit(1);
+    }
 
-  // Build the CDF from the distribution file
-  Num_entries = 0;
-  fscanf(fp_dist, "%s %s \n", instring1, instring2);
-  CDF[Num_entries].cdf_val = atof(instring1);
-  CDF[Num_entries].rv_val = atof(instring2);
-  while (!feof(fp_dist))
-  {
-    Num_entries++;
+    // Build the CDF from the distribution file
+    Num_entries = 0;
     fscanf(fp_dist, "%s %s \n", instring1, instring2);
-    CDF[Num_entries].cdf_val = atof(instring1) + CDF[Num_entries-1].cdf_val;
+    CDF[Num_entries].cdf_val = atof(instring1);
     CDF[Num_entries].rv_val = atof(instring2);
-  }
+    while (!feof(fp_dist))
+    {
+        Num_entries++;
+        fscanf(fp_dist, "%s %s \n", instring1, instring2);
+        CDF[Num_entries].cdf_val = atof(instring1) + CDF[Num_entries - 1].cdf_val;
+        CDF[Num_entries].rv_val = atof(instring2);
+    }
 
-  // Verify that last cdf_val in the CDF is 1.0 (sum of probabilities = 1.0)
-  if (CDF[Num_entries].cdf_val != 1.0)
-  {
-    printf("ERROR - sum of probabilities in %s is %f (must be 1.0) \n",
-      DIST_FILE, CDF[Num_entries].cdf_val );
-    exit(1);
-  }
+    // Verify that last cdf_val in the CDF is 1.0 (sum of probabilities = 1.0)
+    if (CDF[Num_entries].cdf_val != 1.0)
+    {
+        printf("ERROR - sum of probabilities in %s is %f (must be 1.0) \n",
+               DIST_FILE, CDF[Num_entries].cdf_val );
+        exit(1);
+    }
 
-  // Prompt for output filename and then create/open the file
-  printf("Output file name ===================================> ");
-  scanf("%s", instring1);
-  fp_out = fopen(instring1, "w");
-  if (fp_out == NULL)
-  {
-    printf("ERROR in creating output file (%s) \n", instring1);
-    exit(1);
-  }
+    // Prompt for output filename and then create/open the file
+    printf("Output file name ===================================> ");
+    scanf("%s", instring1);
+    fp_out = fopen(instring1, "w");
+    if (fp_out == NULL)
+    {
+        printf("ERROR in creating output file (%s) \n", instring1);
+        exit(1);
+    }
 
-  // Prompt for random number seed and then use it
-  printf("Random number seed =================================> ");
-  scanf("%s", instring1);
-  rand_val((int) atoi(instring1));
+    // Prompt for random number seed and then use it
+    printf("Random number seed =================================> ");
+    scanf("%s", instring1);
+    rand_val((int) atoi(instring1));
 
-  // Prompt for number of samples to generate
-  printf("Number of samples to generate ======================> ");
-  scanf("%s", instring1);
-  num_samples = atoi(instring1);
+    // Prompt for number of samples to generate
+    printf("Number of samples to generate ======================> ");
+    scanf("%s", instring1);
+    num_samples = atoi(instring1);
 
-  // Output message and build the empriical CDF
-  printf("-------------------------------------------------------- \n");
-  printf("-  Building the empirical CDF                          - \n");
-  printf("-------------------------------------------------------- \n");
+    // Output message and build the empriical CDF
+    printf("-------------------------------------------------------- \n");
+    printf("-  Building the empirical CDF                          - \n");
+    printf("-------------------------------------------------------- \n");
 
-  // Output message and generate interarrival times
-  printf("-------------------------------------------------------- \n");
-  printf("-  Generating samples to file                          - \n");
-  printf("-------------------------------------------------------- \n");
-  for (i=0; i<num_samples; i++)
-  {
-    emp_rv = emp();
-    fprintf(fp_out, "%f \n", emp_rv);
-  }
+    // Output message and generate interarrival times
+    printf("-------------------------------------------------------- \n");
+    printf("-  Generating samples to file                          - \n");
+    printf("-------------------------------------------------------- \n");
+    for (i = 0; i < num_samples; i++)
+    {
+        emp_rv = emp();
+        fprintf(fp_out, "%f \n", emp_rv);
+    }
 
-  // Output message and close the distribution and output files
-  printf("-------------------------------------------------------- \n");
-  printf("-  Done! \n");
-  printf("-------------------------------------------------------- \n");
-  fclose(fp_dist);
-  fclose(fp_out);
+    // Output message and close the distribution and output files
+    printf("-------------------------------------------------------- \n");
+    printf("-  Done! \n");
+    printf("-------------------------------------------------------- \n");
+    fclose(fp_dist);
+    fclose(fp_out);
 }
 
 //===========================================================================
@@ -175,23 +175,23 @@ void main(void)
 //===========================================================================
 double emp(void)
 {
-  double z;                     // Uniform random number (0 < z < 1)
-  double emp_value;             // Computed exponential value to be returned
-  int    i;                     // Loop counter
+    double z;                     // Uniform random number (0 < z < 1)
+    double emp_value;             // Computed exponential value to be returned
+    int    i;                     // Loop counter
 
-  // Pull a uniform random number (0 < z < 1)
-  z = rand_val(0);
+    // Pull a uniform random number (0 < z < 1)
+    z = rand_val(0);
 
-  // Map z to empirical distribution and get empirical RV value
-  for (i=0; i<=Num_entries; i++)
-    if (z <= CDF[i].cdf_val)
-    {
-      emp_value = CDF[i].rv_val;
-      break;
-    }
+    // Map z to empirical distribution and get empirical RV value
+    for (i = 0; i <= Num_entries; i++)
+        if (z <= CDF[i].cdf_val)
+        {
+            emp_value = CDF[i].rv_val;
+            break;
+        }
 
-  // Return the empirical RV value
-  return(emp_value);
+    // Return the empirical RV value
+    return(emp_value);
 }
 
 //=========================================================================
@@ -203,31 +203,31 @@ double emp(void)
 //=========================================================================
 double rand_val(int seed)
 {
-  const long  a =      16807;  // Multiplier
-  const long  m = 2147483647;  // Modulus
-  const long  q =     127773;  // m div a
-  const long  r =       2836;  // m mod a
-  static long x;               // Random int value
-  long        x_div_q;         // x divided by q
-  long        x_mod_q;         // x modulo q
-  long        x_new;           // New x value
+    const long  a =      16807;  // Multiplier
+    const long  m = 2147483647;  // Modulus
+    const long  q =     127773;  // m div a
+    const long  r =       2836;  // m mod a
+    static long x;               // Random int value
+    long        x_div_q;         // x divided by q
+    long        x_mod_q;         // x modulo q
+    long        x_new;           // New x value
 
-  // Set the seed if argument is non-zero and then return zero
-  if (seed > 0)
-  {
-    x = seed;
-    return(0.0);
-  }
+    // Set the seed if argument is non-zero and then return zero
+    if (seed > 0)
+    {
+        x = seed;
+        return(0.0);
+    }
 
-  // RNG using integer arithmetic
-  x_div_q = x / q;
-  x_mod_q = x % q;
-  x_new = (a * x_mod_q) - (r * x_div_q);
-  if (x_new > 0)
-    x = x_new;
-  else
-    x = x_new + m;
+    // RNG using integer arithmetic
+    x_div_q = x / q;
+    x_mod_q = x % q;
+    x_new = (a * x_mod_q) - (r * x_div_q);
+    if (x_new > 0)
+        x = x_new;
+    else
+        x = x_new + m;
 
-  // Return a random value between 0.0 and 1.0
-  return((double) x / m);
+    // Return a random value between 0.0 and 1.0
+    return((double) x / m);
 }
